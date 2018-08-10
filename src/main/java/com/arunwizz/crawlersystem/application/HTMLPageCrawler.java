@@ -103,16 +103,12 @@ public class HTMLPageCrawler {
             } else {
                 tutil.findRecordN(dr.get(0));//Case 2
             }
-        }
-
-        Gson gson = new Gson();        
+        }      
 
         //Data Extraction from DEPTA Section 4, Page# 80.
         /*
          * Produce one rooted tag tree for each data records for each data region.
          */
-
-        String outputString = "";
 
         List<List<List<List<String>>>> outputFile = new ArrayList<List<List<List<String>>>>();
 
@@ -138,14 +134,24 @@ public class HTMLPageCrawler {
                         if (child.isSameWithoutData(seedChildren.get(i))) {
                             List<Node<String>> childList = new Tree<String>(child).traverse(Tree.PRE_ORDER);
 
-                            String tempStr = "";
-                            for (Node<String> subchild : childList) {                                
-                                if (subchild.getData() != null) {
-                                    tempStr += subchild.getData();
-                                }
-                            }    
+                            List<Node<String>> filterList = new ArrayList<Node<String>>();
                             
-                            outputColumns.add(tempStr);
+                            for (Node<String> subChild : childList) {                                
+                                if (subChild.getData() != null) {
+                                    boolean hasFound = false;
+
+                                    for (Node<String> filterChild : filterList) {
+                                        if (filterChild.isSame(subChild)) {
+                                            hasFound = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!hasFound) {
+                                        outputColumns.add(subChild.getData());
+                                    }
+                                }
+                            }
                         } else {
                             outputColumns.add("");
                         }
@@ -156,10 +162,6 @@ public class HTMLPageCrawler {
             }
             outputFile.add(outputTable);            
         }
-
-        // outputString = gson.toJson((outputFile));
-
-        // logger.info(outputString);
 
         try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/" + urlList[index][1] + ".json")) {
             new GsonBuilder().create().toJson(outputFile, writer);

@@ -303,20 +303,29 @@ public class Node<T> extends GeneralizedNode<T> {
     }
 
     public boolean isSameWithoutData(Node<String> node) {
-        boolean flag = true;
+        if (this.attributes.size() != node.getAttributes().size())
+            return false;
+
+        int sameCount = 0, keyCount = 0;
 
         for (Map.Entry<String, String> selfEntry : this.attributes.entrySet()) {
-            for (Map.Entry<String, String> nodeEntry : node.getAttributes().entrySet()) {
-                if (!selfEntry.getKey().equals(nodeEntry.getKey())) {
-                    flag = false;
-                    break;
-                }
+            if (node.getAttributes().containsKey(selfEntry.getKey())) {
+                sameCount++;
             }
 
-            if (flag == false) break;
+            keyCount++;
         }
 
-        if (flag == true && this.getLabel().equals(node.getLabel())) {
+        if (sameCount == keyCount && this.getLabel().equals(node.getLabel())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isSame(Node<String> node) {
+        if (this.attributes.equals(node.getAttributes()) && this.getLabel().equals(node.getLabel()) &&
+        this.data.equals(node.getData())) {
             return true;
         } else {
             return false;
