@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.arunwizz.crawlersystem.application.ds.matrix.Matrix;
 
-
 public class Node<T> extends GeneralizedNode<T> {
 
     /**
@@ -33,36 +32,36 @@ public class Node<T> extends GeneralizedNode<T> {
     private ArrayList<DataRegion> dataRegions;
     private List<Node<T>> children;
     private int preOrderPosition;
-    private int relativePosition;//relative to siblings
-    
-    //TODO: remove this constructor, once addChild handles the preorder position
-    public Node(int preOrderPosition){
+    private int relativePosition;// relative to siblings
+
+    // TODO: remove this constructor, once addChild handles the preorder position
+    public Node(int preOrderPosition) {
         attributes = new HashMap<String, String>();
         dataRegions = new ArrayList<DataRegion>();
         setPreOrderPosition(preOrderPosition);
     }
-    
-    public Node(){
+
+    public Node() {
         attributes = new HashMap<String, String>();
         dataRegions = new ArrayList<DataRegion>();
         setPreOrderPosition(1);
     }
-    
+
     public Node(String label) {
         this();
         this.label = label;
     }
 
-    //-----------------
+    // -----------------
     public Node<T> getParent() {
         return this.parent;
     }
-    
+
     public void setParent(Node<T> parent) {
         this.parent = parent;
     }
-    //-----------------
-    
+    // -----------------
+
     public void setPrevSibling(Node<T> prevSibling) {
         this.prevSibling = prevSibling;
     }
@@ -79,15 +78,15 @@ public class Node<T> extends GeneralizedNode<T> {
         return nextSibling;
     }
 
-    //-----------------
+    // -----------------
     public String getLabel() {
         return this.label;
     }
- 
+
     public void setLabel(String label) {
         this.label = label;
-    }  
-    //-----------------
+    }
+    // -----------------
 
     public void setAligned(boolean aligned) {
         this.aligned = aligned;
@@ -97,36 +96,36 @@ public class Node<T> extends GeneralizedNode<T> {
         return aligned;
     }
 
-    //-----------------
-    public String getData(){
+    // -----------------
+    public String getData() {
         return this.data;
     }
-    
-    public void setData(String data){
+
+    public void setData(String data) {
         this.data = data;
     }
-    //-----------------
+    // -----------------
 
-    //-----------------
+    // -----------------
     public Map<String, String> getAttributes() {
         return attributes;
     }
-    
+
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-    //-----------------
-    
-    //-----------------    
+    // -----------------
+
+    // -----------------
     public Matrix<Float> getChildDistanceMatrix() {
         return childDistanceMatrix;
     }
-    
+
     public void setChildDistanceMatrix(Matrix<Float> childDistanceMatrix) {
         this.childDistanceMatrix = childDistanceMatrix;
     }
-    //-----------------
-    
+    // -----------------
+
     public void setDataRegions(ArrayList<DataRegion> dataRegions) {
         this.dataRegions = dataRegions;
     }
@@ -135,28 +134,28 @@ public class Node<T> extends GeneralizedNode<T> {
         return dataRegions;
     }
 
-    //-----------------    
+    // -----------------
     public List<Node<T>> getChildren() {
         if (this.children == null) {
             return new ArrayList<Node<T>>();
         }
         return this.children;
     }
-    
+
     public void setChildren(List<Node<T>> children) {
         this.children = children;
     }
-    
-    //relative position
+
+    // relative position
     /**
      * it uses 0 based indexing and not 1
      */
     public Node<T> getChildAt(int pos) {
-        if (children == null || pos<0 || pos>children.size()-1)
+        if (children == null || pos < 0 || pos > children.size() - 1)
             return null;
         return children.get(pos);
     }
-    
+
     public void setPreOrderPosition(int preOrderPposition) {
         this.preOrderPosition = preOrderPposition;
     }
@@ -168,67 +167,75 @@ public class Node<T> extends GeneralizedNode<T> {
     public void setRelativePosition(int relativePosition) {
         this.relativePosition = relativePosition;
     }
+
     public int getRelativePosition() {
         return relativePosition;
     }
+
     public int getChildrenSize() {
         if (children == null) {
             return 0;
         }
         return children.size();
     }
-    
+
     /**
-     * currently unused, shall be useful when addChild itself takes care of pre-order position
+     * currently unused, shall be useful when addChild itself takes care of
+     * pre-order position
+     * 
      * @return
      */
     private int getCurrentPreOrderPosition() {
         if (children == null || children.size() == 0) {
             return this.preOrderPosition;
         } else {
-            return children.get(children.size()-1).getCurrentPreOrderPosition();
+            return children.get(children.size() - 1).getCurrentPreOrderPosition();
         }
     }
-    
+
     /**
      * adds a child node to this node
+     * 
      * @param child
      */
     public void addChild(Node<T> child) {
-        if (children == null) {
-            children = new ArrayList<Node<T>>();
+        if (child != null) {
+            if (children == null) {
+                children = new ArrayList<Node<T>>();
+            }
+            child.setRelativePosition(children.size());/* keeps the relative position among siblings */
+            // child.setPreOrderPosition(getCurrentPreOrderPosition()+1);
+            /*
+             * TODO: ideally, pre-order position for following nodes should be updated as
+             * well, currently assuming, nodes are added in pre-order fashion only.
+             */
+            child.parent = this;
+            if (!children.isEmpty()) {
+                child.setPrevSibling(children.get(children.size() - 1));
+                children.get(children.size() - 1).setNextSibling(child);
+            }
+            children.add(child);
         }
-        child.setRelativePosition(children.size());/*keeps the relative position among siblings*/
-        //child.setPreOrderPosition(getCurrentPreOrderPosition()+1);
-        /*TODO: ideally, pre-order position for following nodes
-        should be updated as well, currently assuming, nodes are added in pre-order fashion only.*/
-        child.parent = this;
-        if (!children.isEmpty()) {
-            child.setPrevSibling(children.get(children.size()-1));
-            children.get(children.size()-1).setNextSibling(child);
-        }
-        children.add(child);
-        
-    }    
-    //----------------------
-    
-    //----------------------
+    }
+    // ----------------------
+
+    // ----------------------
     /**
      * depth of this node
      */
-    public int height(){
+    public int height() {
         if (getChildrenSize() == 0) {
             return 1;
         } else {
-            //max of children heights + 1
+            // max of children heights + 1
             List<Integer> childHeights = new ArrayList<Integer>();
-            for (Node<T> child: getChildren()){
+            for (Node<T> child : getChildren()) {
                 childHeights.add(child.height());
             }
             return Collections.max(childHeights) + 1;
         }
     }
-    
+
     /**
      * returns child node at given pre-order location
      */
@@ -236,7 +243,7 @@ public class Node<T> extends GeneralizedNode<T> {
         if (this.preOrderPosition == preOrderPosition) {
             return this;
         } else {
-            for (Node<T> child:getChildren()) {
+            for (Node<T> child : getChildren()) {
                 Node<T> subNode = child.getChildAtPreOrderPosition(preOrderPosition);
                 if (subNode != null) {
                     return subNode;
@@ -249,48 +256,70 @@ public class Node<T> extends GeneralizedNode<T> {
     }
 
     /**
-     * returns child node at given post-order location, relative to root
-     * index starts from 1
+     * returns child node at given post-order location, relative to root index
+     * starts from 1
      */
     public Node<T> getChildAtPostOrderPosition(int postOrderPosition) {
-        return this.getChildAt(postOrderPosition-1);
+        return this.getChildAt(postOrderPosition - 1);
     }
-    
+
     @Override
     /**
-     * returns pre-order tag string 
+     * returns pre-order tag string
      */
     public String toString() {
-        
+
         StringWriter stringWriter = new StringWriter();
         stringWriter.write(System.getProperty("line.separator"));
         preOrderPrint(this, stringWriter, "");
-        return stringWriter.toString();        
-        
+        return stringWriter.toString();
+
     }
-    
+
     public String toPreOrderString() {
         StringWriter sw = new StringWriter();
         sw.append(this.label.toString());
-        for (Node<T> child: getChildren()){
+        for (Node<T> child : getChildren()) {
             sw.append(child.toPreOrderString());
         }
         return sw.toString();
     }
-    
+
     private void preOrderPrint(Node<T> rootNode, StringWriter stringWriter, String indent) {
-        stringWriter.write(indent + "-" + rootNode.getLabel() + "[" + rootNode.getData() + "]" + "{"  + rootNode.getPreOrderPosition() + "}" + System.getProperty("line.separator"));
-        for (Node<T> childNode: rootNode.getChildren()) {
+        stringWriter.write(indent + "-" + rootNode.getLabel() + "[" + rootNode.getData() + "]" + "{"
+                + rootNode.getPreOrderPosition() + "}" + System.getProperty("line.separator"));
+        for (Node<T> childNode : rootNode.getChildren()) {
             preOrderPrint(childNode, stringWriter, indent + "\t");
         }
-    }    
-    
+    }
+
     /**
      * return a deep clone/copy of current node
      */
     public Node<T> copy() {
         Node<T> copiedNode = new Node<T>(this.label);
-        //TODO: we might need it
+        // TODO: we might need it
         return copiedNode;
+    }
+
+    public boolean isSameWithoutData(Node<String> node) {
+        boolean flag = true;
+
+        for (Map.Entry<String, String> selfEntry : this.attributes.entrySet()) {
+            for (Map.Entry<String, String> nodeEntry : node.getAttributes().entrySet()) {
+                if (!selfEntry.getKey().equals(nodeEntry.getKey())) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag == false) break;
+        }
+
+        if (flag == true && this.getLabel().equals(node.getLabel())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -1,11 +1,15 @@
 package com.arunwizz.crawlersystem.application;
 
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.Writer;
+import java.io.FileWriter;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +25,7 @@ import com.arunwizz.crawlersystem.application.ds.tree.TreeUtil;
 import com.arunwizz.crawlersystem.application.pageparser.HTMLParser;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class HTMLPageCrawler {
     
@@ -36,9 +41,10 @@ public class HTMLPageCrawler {
         String[][] urlList = new String[][] {
             { "https", "www.microchipdirect.com", "/Chart.aspx?branchId=30044&mid=14&treeid=3101" },
             { "https", "www.schukat.com", "/schukat/schukat_cms_en.nsf/index/CMSDF15D356B046D53BC1256D550038A9E0?OpenDocument&wg=U1232&refDoc=CMS322921A477B31844C125707B0034EB15" },
+            { "https", "www.w3schools.com", "/howto/howto_css_pricing_table.asp" },
         };
 
-        Integer index = 0;
+        Integer index = 2;
 
         URI uri = new URI(urlList[index][0], urlList[index][1], urlList[index][2], null);
 
@@ -87,8 +93,8 @@ public class HTMLPageCrawler {
         tutil.mdr(pageTree.getRoot(), k);
         tutil.findDR(pageTree.getRoot(), k, t);
         List<List<GeneralizedNode<Node<String>>>> drList = tutil.getDRs(pageTree);
-        logger.info(drList.size());
-        logger.info(drList);
+        // logger.info(drList.size());
+        // logger.info(drList);
 
         for (List<GeneralizedNode<Node<String>>> dr: drList) {
             /*for each data region */
@@ -105,12 +111,58 @@ public class HTMLPageCrawler {
         /*
          * Produce one rooted tag tree for each data records for each data region.
          */
+
+        String outputString = "";
+
+        List<List<List<List<String>>>> outputFile = new ArrayList<List<List<List<String>>>>();
+
         for (List<GeneralizedNode<Node<String>>> dr: drList) {
+            // logger.info(dr);
+
             /*for each data region */
             PriorityQueue<Tree<String>> dataRecordQueue = tutil.buildDataRecrodTree(dr);
-            tutil.partialTreeAlignment(dataRecordQueue);
-            String dataRecordQueueJSON = gson.toJson((dataRecordQueue));
-            
+
+            List<Tree<String>> alignedDataRecords = tutil.partialTreeAlignment(dataRecordQueue);
+
+            List<Node<String>> seedChildren = alignedDataRecords.get(0).getRoot().getChildren();
+
+            List<List<List<String>>> outputTable = new ArrayList<List<List<String>>>();
+
+            for (int i = 0; i < seedChildren.size(); i++) {
+                List<List<String>> outputRows = new ArrayList<List<String>>();
+
+                for (Tree<String> tree : alignedDataRecords) {                    
+                    List<String> outputColumns = new ArrayList<String>();
+
+                    for (Node<String> child : tree.getRoot().getChildren()) {
+                        if (child.isSameWithoutData(seedChildren.get(i))) {
+                            List<Node<String>> childList = new Tree<String>(child).traverse(Tree.PRE_ORDER);
+
+                            String tempStr = "";
+                            for (Node<String> subchild : childList) {                                
+                                if (subchild.getData() != null) {
+                                    tempStr += subchild.getData();
+                                }
+                            }    
+                            
+                            outputColumns.add(tempStr);
+                        } else {
+                            outputColumns.add("");
+                        }
+                    }
+                    outputRows.add(outputColumns);
+                }
+                outputTable.add(outputRows);                
+            }
+            outputFile.add(outputTable);            
+        }
+
+        // outputString = gson.toJson((outputFile));
+
+        // logger.info(outputString);
+
+        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/" + urlList[index][1] + ".json")) {
+            new GsonBuilder().create().toJson(outputFile, writer);
         }
 
 //        logger.info(pageTree);

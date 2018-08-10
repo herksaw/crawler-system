@@ -32,8 +32,7 @@ public class TreeUtil {
 
     public Tree<String> getTreeFromDOM(Document document) {
         DocumentTraversal traversal = (DocumentTraversal) document;
-        TreeWalker walker = traversal.createTreeWalker(
-                document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null,
+        TreeWalker walker = traversal.createTreeWalker(document.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null,
                 true);
         int[] nodePosition = new int[] { 1 };
         Tree<String> tree = new Tree<String>(traverseDom(walker, nodePosition));
@@ -46,18 +45,14 @@ public class TreeUtil {
         rootNode.setLabel(currentNode.getNodeName());
         rootNode.setData(getNodeValue(currentNode));
 
-        for (org.w3c.dom.Node n = walker.firstChild(); n != null; n = walker
-                .nextSibling()) {
-            if (n.getNodeName().equalsIgnoreCase("script")
-                    || n.getNodeName().equalsIgnoreCase("noscript")
-                    || n.getNodeName().equalsIgnoreCase("style")
-                    || n.getNodeName().equalsIgnoreCase("head")
-                    || n.getNodeName().equalsIgnoreCase("br")
-                    || n.getNodeName().equalsIgnoreCase("input")
+        for (org.w3c.dom.Node n = walker.firstChild(); n != null; n = walker.nextSibling()) {
+            if (n.getNodeName().equalsIgnoreCase("script") || n.getNodeName().equalsIgnoreCase("noscript")
+                    || n.getNodeName().equalsIgnoreCase("style") || n.getNodeName().equalsIgnoreCase("head")
+                    || n.getNodeName().equalsIgnoreCase("br") || n.getNodeName().equalsIgnoreCase("input")
                     || n.getNodeName().equalsIgnoreCase("hr")) {
                 continue;
             }
-            
+
             nodePosition[0] += 1;
             rootNode.addChild(traverseDom(walker, nodePosition));
         }
@@ -91,40 +86,33 @@ public class TreeUtil {
         }
     }
 
-    private ArrayList<DataRegion> indentifyDRs(int start, Node<String> node,
-            int k, float t) {
+    private ArrayList<DataRegion> indentifyDRs(int start, Node<String> node, int k, float t) {
         ArrayList<DataRegion> idenDRs = new ArrayList<DataRegion>();
 
         DataRegion maxDR = new DataRegion(0, 0, 0, 0);// 1
         DataRegion curDR = new DataRegion(0, 0, 0, 0);// 8
         for (int j = 1; j <= Math.min(k, node.getChildrenSize() / 2); j++) {/*
-                                                                             * for
-                                                                             * each
-                                                                             * j
-                                                                             * -
-                                                                             * combination
-                                                                             */// 2//think
-                                                                               // need
-                                                                               // to
-                                                                               // prevent
-                                                                               // crossing
-                                                                               // combination
-                                                                               // more
-                                                                               // than
-                                                                               // child
-                                                                               // count
+                                                                             * for each j - combination
+                                                                             */
+            // 2//think
+            // need
+            // to
+            // prevent
+            // crossing
+            // combination
+            // more
+            // than
+            // child
+            // count
             for (int f = start; f <= start + j; f++) {/* start from each node */
                 boolean flag = true;
                 for (int i = f; i < node.getChildrenSize() - 1; i += j) {
-                    Float distanceij = node.getChildDistanceMatrix()
-                            .getElement(j - 1, i);
-                    int currentChildNodePreOrderPosition = node.getChildAt(i)
-                            .getPreOrderPosition();
+                    Float distanceij = node.getChildDistanceMatrix().getElement(j - 1, i);
+                    int currentChildNodePreOrderPosition = node.getChildAt(i).getPreOrderPosition();
                     if (distanceij != null && distanceij < t) {
                         if (flag) {
-                            curDR = new DataRegion(
-                                    currentChildNodePreOrderPosition, i, j,
-                                    2 * j);// all index start with 0
+                            curDR = new DataRegion(currentChildNodePreOrderPosition, i, j, 2 * j);// all index start
+                                                                                                  // with 0
                             flag = false;
                         } else {
                             curDR.setNodeCount(curDR.getNodeCount() + j);
@@ -132,20 +120,16 @@ public class TreeUtil {
                     } else if (!flag) {
                         break;// 11: exit inner for loop
                     }
-                }// inner most for
-                if (maxDR.getNodeCount() < curDR.getNodeCount()
-                        && (maxDR.getRegionStartRelativePosition() == 0 || maxDR
-                                .getNodeCount() >= curDR.getNodeCount())) {
+                } // inner most for
+                if (maxDR.getNodeCount() < curDR.getNodeCount() && (maxDR.getRegionStartRelativePosition() == 0
+                        || maxDR.getNodeCount() >= curDR.getNodeCount())) {
                     maxDR = curDR;
                 }
-            }// middle for
-        }// outer for
+            } // middle for
+        } // outer for
         if (maxDR.getNodeCount() != 0) {
-            if (maxDR.getRegionStartRelativePosition() + maxDR.getNodeCount() != node
-                    .getChildrenSize()) {
-                idenDRs.addAll(indentifyDRs(
-                        maxDR.getRegionStartRelativePosition()
-                                + maxDR.getNodeComb(), node, k, t));
+            if (maxDR.getRegionStartRelativePosition() + maxDR.getNodeCount() != node.getChildrenSize()) {
+                idenDRs.addAll(indentifyDRs(maxDR.getRegionStartRelativePosition() + maxDR.getNodeComb(), node, k, t));
             } else {
                 idenDRs.add(maxDR);
             }
@@ -153,14 +137,10 @@ public class TreeUtil {
         return idenDRs;
     }
 
-    private ArrayList<DataRegion> unCovererDRs(Node<String> node,
-            Node<String> child) {
+    private ArrayList<DataRegion> unCovererDRs(Node<String> node, Node<String> child) {
         for (DataRegion dr : node.getDataRegions()) {
-            if (child.getRelativePosition() >= dr
-                    .getRegionStartRelativePosition()
-                    && child.getRelativePosition() <= dr
-                            .getRegionStartRelativePosition()
-                            + dr.getNodeCount()) {// 2
+            if (child.getRelativePosition() >= dr.getRegionStartRelativePosition()
+                    && child.getRelativePosition() <= dr.getRegionStartRelativePosition() + dr.getNodeCount()) {// 2
                 return null;
             }
         }
@@ -177,8 +157,8 @@ public class TreeUtil {
     }
 
     /**
-     * Refer to Figure 6: The structure comparison algorithm, pg# 5 of
-     * "Mining data records of web pages" by, Bing Liu
+     * Refer to Figure 6: The structure comparison algorithm, pg# 5 of "Mining data
+     * records of web pages" by, Bing Liu
      * 
      * @param children
      * @param maxComb
@@ -187,8 +167,8 @@ public class TreeUtil {
         List<Node<String>> children = node.getChildren();
         /* initialize the node to store the edit distance among child */
         /*
-         * the row of the matrix will store the i-th child and, and column for
-         * every j-combination
+         * the row of the matrix will store the i-th child and, and column for every
+         * j-combination
          */
         node.setChildDistanceMatrix(new Matrix<Float>(maxComb, children.size()));
         /* for each node */
@@ -205,23 +185,19 @@ public class TreeUtil {
                                                                                  // child
                                                                                  // size
             /* for each combination */
-            for (int j = i + 1; j <= maxComb
-                    && (i + 2 * j - 1) < children.size(); j++) {
+            for (int j = i + 1; j <= maxComb && (i + 2 * j - 1) < children.size(); j++) {
                 /*
-                 * check if at least one pair of combination can be formed,
-                 * within length
+                 * check if at least one pair of combination can be formed, within length
                  */
                 // if ((i+2*j-1) < children.size()) {
                 int st = i;
                 /*
-                 * start with first combination, and jump to next combination
-                 * within length
+                 * start with first combination, and jump to next combination within length
                  */
                 for (int k = i + j; k < children.size(); k += j) {
                     /* check if next combination can be made within length */
                     if (k + j - 1 < children.size()) {
-                        float nd = normalizedEditDistance(children, st, k, k
-                                + j - 1);
+                        float nd = normalizedEditDistance(children, st, k, k + j - 1);
                         node.getChildDistanceMatrix().setElement(j - 1, st, nd);// at
                                                                                 // jth
                                                                                 // combination
@@ -239,11 +215,15 @@ public class TreeUtil {
     /**
      * Partial Tree Alignment for data extraction
      */
-    public void partialTreeAlignment(PriorityQueue<Tree<String>> sQ) {
+    public List<Tree<String>> partialTreeAlignment(PriorityQueue<Tree<String>> sQ) {
         Tree<String> ts = sQ.poll();
         boolean flag = false;
         PriorityQueue<Tree<String>> rQ = new PriorityQueue<Tree<String>>();
         boolean i = false;// all unaligned items inserted
+
+        List<Tree<String>> resultList = new ArrayList<Tree<String>>();
+        resultList.add(ts);
+
         while (!sQ.isEmpty()) {
             Tree<String> ti = sQ.poll();
             int matcheCount = ts.simpleTreeMatching(ti);// matches and aligns
@@ -251,6 +231,8 @@ public class TreeUtil {
                 i = insertIntoSeed(ts, ti);
                 if (!i) {/* if still not all aligned */
                     rQ.add(ti);
+                } else {
+                    resultList.add(ti);
                 }
             }
             if (matcheCount > 0 || i) {
@@ -263,30 +245,80 @@ public class TreeUtil {
                 i = false;
             }
         }
+
+        return resultList;
+
         // TODO: output data item from each ti to the data table
-        //logger.info(arg0)
+        // logger.info(arg0)
     }
 
+    // Original version
+    // private boolean insertIntoSeed(Tree<String> ts, Tree<String> ti) {
+    // // TODO: keep it for end.. but important
+    // /* start with each child */
+    // ArrayList<Node<String>> unalignedNodes = new ArrayList<Node<String>>();
+    // Node<String> child = ti.getRoot().getChildAt(0);
+    // while (child != null) {
+    // if (!child.isAligned()) {
+    // unalignedNodes.add(child);
+    // child = child.getNextSibling();
+    // } else {
+    // // check if both left and right nodes exists to unaligned nodes
+    // // if yes, check if corresponding nodes are immediate neighbors in Ts
+    // if (unalignedNodes.size() != 0) {
+    // Node<String> leftNode = unalignedNodes.get(0).getPrevSibling();
+    // Node<String> rightNode = unalignedNodes.get(unalignedNodes.size() -
+    // 1).getNextSibling();
+    // }
+
+    // break;// break as soon as found next aligned child.
+    // }
+    // }
+
+    // return true;
+    // }
+
+    // Modified version
     private boolean insertIntoSeed(Tree<String> ts, Tree<String> ti) {
-        //TODO: keep it for end.. but important
-        /* start with each child */
-        ArrayList<Node<String>> unalignedNodes = new ArrayList<Node<String>>();
-        Node<String> child = ti.getRoot().getChildAt(0);
-        while (child != null) {
-            if (!child.isAligned()) {
-                unalignedNodes.add(child);
-                child = child.getNextSibling();
-            } else {
-                //check if both left and right nodes exists to unaligned nodes
-                //if yes, check if corresponding nodes are immediate neighbors in Ts
-                Node<String> leftNode = unalignedNodes.get(0).getPrevSibling();
-                Node<String> rightNode = unalignedNodes.get(unalignedNodes.size()-1).getNextSibling();
-                
-                break;//break as soon as found next aligned child.
+        int unalignedCounts = 0;
+
+        for (Node<String> tiChild : ti.getRoot().getChildren()) {
+            if (!tiChild.isAligned()) {
+                unalignedCounts++; 
+
+                List<Node<String>> seedChildren = ts.getRoot().getChildren();
+
+                if (tiChild.getPrevSibling() == null && tiChild.getNextSibling() != null) {
+                    if (tiChild.getNextSibling().isSameWithoutData(seedChildren.get(0))) {
+                        seedChildren.add(0, tiChild);
+                        unalignedCounts--;
+                    }
+                } else if (tiChild.getPrevSibling() != null && tiChild.getNextSibling() != null) {
+                    for (int i = 0; i < seedChildren.size() - 1; i++) {
+                        if (tiChild.getPrevSibling().isSameWithoutData(seedChildren.get(i)) && 
+                        tiChild.getNextSibling().isSameWithoutData(seedChildren.get(i + 1))) {
+                            seedChildren.add(i + 1, tiChild);
+                            unalignedCounts--;
+                            break;
+                        }
+                    }
+                } else if (tiChild.getPrevSibling() != null && tiChild.getNextSibling() == null) {
+                    if (tiChild.getPrevSibling().isSameWithoutData(seedChildren.get(seedChildren.size() - 1))) {
+                        seedChildren.add(tiChild);
+                        unalignedCounts--;
+                    }
+                } else {
+                    // Only one node
+                    // Should not happened   
+                }
             }
         }
-        
-        return true;
+
+        if (unalignedCounts > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -299,14 +331,14 @@ public class TreeUtil {
         boolean similarChildren = false;
         while (gi.hasNext()) {
             Node<String> tagNode = gi.next();
-            
+
             if (gi.hasNext()) {/* if this is not the last tagnode */
                 Node<String> nextTagNode = tagNode.getNextSibling();
                 if (tagNode.getChildrenSize() != nextTagNode.getChildrenSize()) {
                     /* generalized node itself is data record */
-                    //generalizedNode.dataRecordIndecator = DataRecordIndecator.SELF;
+                    // generalizedNode.dataRecordIndecator = DataRecordIndecator.SELF;
                     similarChildren = false;
-                    break;/*no need to test further, g is data record itself*/
+                    break;/* no need to test further, g is data record itself */
                 }
             }
             Iterator<Node<String>> childIter = tagNode.getChildren().iterator();
@@ -320,15 +352,14 @@ public class TreeUtil {
                      * single child, treat as all child similar
                      */
                     similarChildren = true;
-                } else {/*more than one child available*/
+                } else {/* more than one child available */
                     Node<String> nextChild = childIter.next();
                     if (child.toPreOrderString().equalsIgnoreCase(nextChild.toPreOrderString())) {
                         similarChildren = true;
                         while (childIter.hasNext()) {
                             child = nextChild;
                             nextChild = childIter.next();
-                            if (child.toPreOrderString().equalsIgnoreCase(
-                                    nextChild.toPreOrderString())) {
+                            if (child.toPreOrderString().equalsIgnoreCase(nextChild.toPreOrderString())) {
                                 similarChildren = true;
                             } else {
                                 similarChildren = false;
@@ -342,9 +373,8 @@ public class TreeUtil {
         }
         if (similarChildren) {
             /*
-             * records are non contiguous just indicate this on 
-             * generalized node, the same should be assumed for remaining
-             * generalized node
+             * records are non contiguous just indicate this on generalized node, the same
+             * should be assumed for remaining generalized node
              */
             generalizedNode.dataRecordIndecator = DataRecordIndecator.CHILD_NON_CONT;
 
@@ -379,8 +409,7 @@ public class TreeUtil {
                     while (childIter.hasNext()) {
                         child = nextChild;
                         nextChild = childIter.next();
-                        if (child.toPreOrderString().equalsIgnoreCase(
-                                nextChild.toPreOrderString())) {
+                        if (child.toPreOrderString().equalsIgnoreCase(nextChild.toPreOrderString())) {
                             similarChildren = true;
                         } else {
                             similarChildren = false;
@@ -398,15 +427,13 @@ public class TreeUtil {
         }
     }
 
-    public PriorityQueue<Tree<String>> buildDataRecrodTree(
-            List<GeneralizedNode<Node<String>>> dr) {
+    public PriorityQueue<Tree<String>> buildDataRecrodTree(List<GeneralizedNode<Node<String>>> dr) {
         PriorityQueue<Tree<String>> dataRecrodQueue = new PriorityQueue<Tree<String>>();
         DataRecordIndecator di = null;
         for (int i = 0; i < dr.size(); i++) {
             GeneralizedNode<Node<String>> g = dr.get(i);
             if (i == 0) {/*
-                          * if its first generalized node, read the information
-                          * about data record
+                          * if its first generalized node, read the information about data record
                           */
                 di = g.dataRecordIndecator;
             }
@@ -425,13 +452,12 @@ public class TreeUtil {
                     }
                     break;
                 case CHILD_NON_CONT:
-                    //TODO: THIS SHOULD NOT HAPPEN
+                    // TODO: THIS SHOULD NOT HAPPEN
                     break;
                 }
-            } else /*multiple tag nodes*/ {
+            } else /* multiple tag nodes */ {
                 // TODO: not implemented completely, test findRecordN first
-                Tree<String> tagTree = new Tree<String>(new Node<String>(
-                "p"));
+                Tree<String> tagTree = new Tree<String>(new Node<String>("p"));
                 switch (di) {
                 case SELF:
                     for (Node<String> self : g) {
@@ -440,13 +466,12 @@ public class TreeUtil {
                     dataRecrodQueue.add(tagTree);
                     break;
                 case CHILD_CONT:
-                    //TODO: THIS SHOULD NOT HAPPEN
+                    // TODO: THIS SHOULD NOT HAPPEN
                     break;
                 case CHILD_NON_CONT:
-                    for (int j = 0; j < g.get(0).getChildrenSize(); j++) {/*for each child*/
-                        tagTree = new Tree<String>(new Node<String>(
-                        "p")); 
-                        for (Node<String> tagNode: g){
+                    for (int j = 0; j < g.get(0).getChildrenSize(); j++) {/* for each child */
+                        tagTree = new Tree<String>(new Node<String>("p"));
+                        for (Node<String> tagNode : g) {
                             tagTree.getRoot().addChild(tagNode.getChildAt(j));
                         }
                         dataRecrodQueue.add(tagTree);
@@ -463,12 +488,11 @@ public class TreeUtil {
      * 
      * @return
      */
-    public List<List<GeneralizedNode<Node<String>>>> getDRs(
-            Tree<String> pageTree) {
+    public List<List<GeneralizedNode<Node<String>>>> getDRs(Tree<String> pageTree) {
 
         /*
-         * A sorted set of all data record sub tree, size of tree will be used
-         * for sorting
+         * A sorted set of all data record sub tree, size of tree will be used for
+         * sorting
          */
         List<List<GeneralizedNode<Node<String>>>> drList = new ArrayList<List<GeneralizedNode<Node<String>>>>();
 
@@ -486,15 +510,12 @@ public class TreeUtil {
                 // Node<String>("g"));//dummy root for generalized node
                 for (int j = 0; j < dr.getNodeComb(); j++) {// for each tag node
                     if (i == 0 && j == 0) {/*
-                                            * first tag tree of first
-                                            * generalized node
+                                            * first tag tree of first generalized node
                                             */
-                        tagNode = pageTree.getSubTreeByPreOrder(
-                                dr.getRegionStartPreOrderPosition()).getRoot();
+                        tagNode = pageTree.getSubTreeByPreOrder(dr.getRegionStartPreOrderPosition()).getRoot();
                         g.add(tagNode);
                     } else {/* remaining tag tree is sibling */
-                        tagNode = pageTree.getSubTreeByPreOrder(
-                                tagNode.getNextSibling().getPreOrderPosition())
+                        tagNode = pageTree.getSubTreeByPreOrder(tagNode.getNextSibling().getPreOrderPosition())
                                 .getRoot();
                         g.add(tagNode);
                     }
@@ -507,20 +528,16 @@ public class TreeUtil {
     }
 
     /**
-     * computes normalized edit distance between two sub tree strings. The
-     * arguments are positional index based on counting starting from 1, so we
-     * need to reduce by 1, as Java list counting start with 0
+     * computes normalized edit distance between two sub tree strings. The arguments
+     * are positional index based on counting starting from 1, so we need to reduce
+     * by 1, as Java list counting start with 0
      * 
      * @param children
-     * @param st
-     *            - first combination start position
-     * @param k
-     *            - next combination start position
-     * @param en
-     *            - next combination end position
+     * @param st       - first combination start position
+     * @param k        - next combination start position
+     * @param en       - next combination end position
      */
-    private float normalizedEditDistance(List<Node<String>> children, int st,
-            int k, int en) {
+    private float normalizedEditDistance(List<Node<String>> children, int st, int k, int en) {
         List<Node<String>> firstChildList = children.subList(st, k);
         List<Node<String>> secondChildList = children.subList(k, en + 1);
         StringWriter swFirst = new StringWriter();
@@ -536,8 +553,7 @@ public class TreeUtil {
 
         Date d1 = new Date();
         int editDistance = xlevenshteinDistance(str1, str2);
-        logger.debug("xeditDistance:" + editDistance + "["
-                + (new Date().getTime() - d1.getTime()) + " ms]");
+        logger.debug("xeditDistance:" + editDistance + "[" + (new Date().getTime() - d1.getTime()) + " ms]");
 
         // d1 = new Date();
         // logger.info("leditDistance:" + levenshteinDistance(str1, str2) + "["
@@ -545,13 +561,11 @@ public class TreeUtil {
         // logger.info("----");
 
         /*
-         * normalized edit distance = edit distance divided by mean length of
-         * two strings
+         * normalized edit distance = edit distance divided by mean length of two
+         * strings
          */
-        BigDecimal meanLength = new BigDecimal(str1.length() + str2.length()
-                / 2.0);
-        BigDecimal normalizedEditDistance = new BigDecimal(editDistance)
-                .divide(meanLength, 1, RoundingMode.HALF_UP);
+        BigDecimal meanLength = new BigDecimal(str1.length() + str2.length() / 2.0);
+        BigDecimal normalizedEditDistance = new BigDecimal(editDistance).divide(meanLength, 1, RoundingMode.HALF_UP);
         return normalizedEditDistance.floatValue();
     }
 
@@ -565,8 +579,7 @@ public class TreeUtil {
     public int levenshteinDistance(String str1, String str2) {
         // logger.debug("computing levenshtein distance for strings " + str1 +
         // " and " + str2);
-        Matrix<Integer> distanceMatrix = new Matrix<Integer>(str1.length() + 1,
-                str2.length() + 1);
+        Matrix<Integer> distanceMatrix = new Matrix<Integer>(str1.length() + 1, str2.length() + 1);
 
         for (int i = 0; i <= str1.length(); i++) {
             distanceMatrix.setElement(i, 0, i);
@@ -577,12 +590,12 @@ public class TreeUtil {
         try {
             for (i = 1; i <= str1.length(); i++) {
                 for (j = 1; j <= str2.length(); j++) {
-                    distanceMatrix.setElement(i, j, Math.min(
-                            Math.min(distanceMatrix.getElement(i - 1, j) + 1,
-                                    distanceMatrix.getElement(i, j - 1) + 1),
-                            distanceMatrix.getElement(i - 1, j - 1)
-                                    + ((str1.charAt(i - 1) == str2
-                                            .charAt(j - 1)) ? 0 : 1)));
+                    distanceMatrix.setElement(i, j,
+                            Math.min(
+                                    Math.min(distanceMatrix.getElement(i - 1, j) + 1,
+                                            distanceMatrix.getElement(i, j - 1) + 1),
+                                    distanceMatrix.getElement(i - 1, j - 1)
+                                            + ((str1.charAt(i - 1) == str2.charAt(j - 1)) ? 0 : 1)));
                 }
             }
 
@@ -628,11 +641,9 @@ public class TreeUtil {
                     row1Distance[columnId] = rowId;
                 } else {
                     row1Distance[columnId] = Math.min(
-                            Math.min(row0Distance[columnId] + 1,
-                                    row1Distance[columnId - 1] + 1),
+                            Math.min(row0Distance[columnId] + 1, row1Distance[columnId - 1] + 1),
                             row0Distance[columnId - 1]
-                                    + ((str1.charAt(rowId - 1) == str2
-                                            .charAt(columnId - 1)) ? 0 : 1));
+                                    + ((str1.charAt(rowId - 1) == str2.charAt(columnId - 1)) ? 0 : 1));
                 }
             }
             // discard row0, and make row1 as as row0 for next loop
