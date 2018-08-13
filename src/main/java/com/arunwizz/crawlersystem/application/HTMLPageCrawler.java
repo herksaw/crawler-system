@@ -39,19 +39,31 @@ public class HTMLPageCrawler {
         Date d1 = new Date();
         logger.info("getting page at " + d1.getTime());
 
-        String[][] urlList = new String[][] {
-                { "https", "www.microchipdirect.com", "/Chart.aspx?branchId=30044&mid=14&treeid=3101" },
-                { "https", "www.schukat.com",
-                        "/schukat/schukat_cms_en.nsf/index/CMSDF15D356B046D53BC1256D550038A9E0?OpenDocument&wg=U1232&refDoc=CMS322921A477B31844C125707B0034EB15" },
-                { "https", "www.w3schools.com", "/howto/howto_css_pricing_table.asp" }, };
+        // String[][] urlList = new String[][] {
+        //         { "https", "www.microchipdirect.com", "/Chart.aspx?branchId=30044&mid=14&treeid=3101" },
+        //         { "https", "www.schukat.com",
+        //                 "/schukat/schukat_cms_en.nsf/index/CMSDF15D356B046D53BC1256D550038A9E0?OpenDocument&wg=U1232&refDoc=CMS322921A477B31844C125707B0034EB15" },
+        //         { "https", "my.mouser.com/", "/new/microchip" }, };
 
-        Integer index = 0;
+        String[] urlList = new String[] {
+            "https://www.microchipdirect.com/Chart.aspx?branchId=30044&mid=14&treeid=3101",
+            "https://www.schukat.com/schukat/schukat_cms_en.nsf/index/CMSDF15D356B046D53BC1256D550038A9E0?OpenDocument&wg=U1232&refDoc=CMS322921A477B31844C125707B0034EB15",
+            "https://www.arrow.com/en/manufacturers/microchip-technology/microcontrollers-and-processors/microcontrollers",
+            "https://www.digikey.com/products/en/integrated-circuits-ics/embedded-fpgas-field-programmable-gate-array-with-microcontrollers/767",            
+            "http://www.newark.com/w/c/semiconductors-ics/microcontrollers-mcu/16-32-bit-microcontrollers-mcu-arm?brand=microchip&range=inc-new",
+            "https://www.nxp.com/products/processors-and-microcontrollers/arm-based-processors-and-mcus/lpc-cortex-m-mcus/lpc800-series-cortex-m0-plus-mcus:MC_71785",
+            "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/16bit/#ac01" };
 
-        URI uri = new URI(urlList[index][0], urlList[index][1], urlList[index][2], null);
+        Integer index = 6;
 
-        String url_str = uri.toASCIIString();
-        url_str = url_str.replaceFirst("%3[f|F]", "?");// some servers couldn't understand encoded ? as query separator.
-        logger.info("Encoded Url: " + url_str);
+        String url_str = urlList[index];
+
+        // URI uri = new URI(urlList[index][0], urlList[index][1], urlList[index][2], null);
+
+        // String url_str = uri.toASCIIString();
+        // url_str = url_str.replaceFirst("%3[f|F]", "?");// some servers couldn't understand encoded ? as query separator.
+        // logger.info("Encoded Url: " + url_str);
+
         // TODO:
         // InputStream pageStream = PageLoader.loadPage(url);
         // InputStream pageStream =
@@ -77,8 +89,7 @@ public class HTMLPageCrawler {
 
         logger.info("parsing  page at " + d1.getTime());
 
-        org.jsoup.nodes.Document pageDomTreeJsoup = Jsoup.connect(url_str).data("query", "Java").userAgent("Mozilla")
-                .cookie("auth", "token").timeout(30000).post();
+        org.jsoup.nodes.Document pageDomTreeJsoup = Jsoup.connect(url_str).userAgent("Mozilla").timeout(30000).get();
 
         W3CDom w3cDom = new W3CDom();
         org.w3c.dom.Document pageDomTree = w3cDom.fromJsoup(pageDomTreeJsoup);
@@ -191,7 +202,7 @@ public class HTMLPageCrawler {
         outputFile.add(outputTable);
 
         try (Writer writer = new FileWriter(
-                System.getProperty("user.dir") + "/output/" + urlList[index][1] + ".json")) {
+                System.getProperty("user.dir") + "/output/" + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
             new GsonBuilder().create().toJson(outputFile, writer);
         }
 
