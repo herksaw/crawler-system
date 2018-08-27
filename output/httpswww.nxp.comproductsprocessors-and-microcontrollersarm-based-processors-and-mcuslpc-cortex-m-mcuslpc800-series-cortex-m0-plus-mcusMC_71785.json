@@ -1,89 +1,44 @@
 [
     [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
         [
             [
-                ""
+                "LPC8N04 MCU | ",
+                "8 MHz | ",
+                "32 KB Flash | ",
+                "Up to 12 GPIO | ",
+                "HVQFN24 | "
             ]
         ],
         [
             [
-                "SOLUTIONS",
-                "AUTOMOTIVE ConnectivityDriver ReplacementPowertrain \u0026 Vehicle DynamicsBody \u0026 ComfortIn-Vehicle ExperienceSecure Gateway \u0026 In-Vehicle NetworkingINDUSTRIAL Factory AutomationHuman Machine Interfaces (HMI)Home and Building ControlIndustrial ConnectivityMotion and Motor ControlPower and EnergyINTERNET OF THINGS Connected ThingsEdge ComputingSecure ThingsSmart ThingsNXP REFERENCE DESIGN LIBRARY Technical content and expertise to help jump start your design and get you to production faster."
+                " | Webinar | ",
+                " | Four-part LPC800 Webinar Series |  | Get to market fast with LPC800 MCUs – a low-cost, energy-level, 8-bit alternative for your next design. |  | Sign up for the webinar | "
             ],
             [
-                "SUPPORT",
-                "SUPPORTTechnical Support CommunitiesNXP Professional ServicesSoftware Support and ServicesApproved Engineering ConsultantsAll Support OptionsDEVELOPER RESOURCESSoftware CenterNXP DesignsDocumentationAll Developer ResourcesTRAINING \u0026 EVENTSEventsNXP ConnectsNXP Technology DaysAll Training and EventsSAMPLE \u0026 BUYBuy DirectOrder SamplesDistributor Network"
-            ]
-        ],
-        [],
-        [],
-        [
-            [
-                ""
-            ]
-        ],
-        [],
-        [],
-        [
-            [
-                ""
-            ]
-        ],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [
-            [
-                ""
-            ]
-        ],
-        [
-            [
-                ""
-            ]
-        ],
-        [
-            [
-                ""
-            ]
-        ],
-        [
-            [
-                ""
-            ]
-        ],
-        [
-            [
-                "LPC8N04 MCU",
-                "8 MHz",
-                "32 KB Flash",
-                "Up to 12 GPIO",
-                "HVQFN24"
-            ]
-        ],
-        [
-            [
-                "Webinar",
-                "Four-part LPC800 Webinar SeriesGet to market fast with LPC800 MCUs – a low-cost, energy-level, 8-bit alternative for your next design.Sign up for the webinar"
+                " | Video | ",
+                " | Demonstrating the LPC8N04 MCU-based IoT Sensor Node with Integrated NFC |  | Check out this button-less demo that was created to demonstrate the capabilities of the LPC8N04 MCU with integrated NFC. |  | Watch Video | "
             ],
             [
-                "Video",
-                "Demonstrating the LPC8N04 MCU-based IoT Sensor Node with Integrated NFCCheck out this button-less demo that was created to demonstrate the capabilities of the LPC8N04 MCU with integrated NFC.Watch Video"
-            ],
-            [
-                "Video",
-                "Learn More about LPC804 MCUs, Development Board and the Programmable Logic Unit FeatureLearn more about the LPC804 MCU, the accompanying development board (LPCXpresso804) and how to leverage the programmable logic unit feature.Watch Video"
+                " | Video | ",
+                " | Learn More about LPC804 MCUs, Development Board and the Programmable Logic Unit Feature |  | Learn more about the LPC804 MCU, the accompanying development board (LPCXpresso804) and how to leverage the programmable logic unit feature. |  | Watch Video | "
             ]
         ],
         [],
         [],
-        [
-            [
-                ""
-            ]
-        ],
+        [],
+        [],
         []
     ]
 ]

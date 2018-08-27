@@ -33,6 +33,8 @@ public class Node<T> extends GeneralizedNode<T> {
     private List<Node<T>> children;
     private int preOrderPosition;
     private int relativePosition;// relative to siblings
+    private int duplicatedCount = 0;
+    private boolean isMatched = false;
 
     // TODO: remove this constructor, once addChild handles the preorder position
     public Node(int preOrderPosition) {
@@ -177,6 +179,22 @@ public class Node<T> extends GeneralizedNode<T> {
             return 0;
         }
         return children.size();
+    }
+
+    public void setDuplicatedCount(int duplicatedCount) {
+        this.duplicatedCount = duplicatedCount;
+    }
+
+    public int getDuplicatedCount() {
+        return this.duplicatedCount;
+    }
+
+    public void setIsMatched(boolean isMatched) {
+        this.isMatched = isMatched;
+    }
+
+    public boolean getIsMatched() {
+        return this.isMatched;
     }
 
     /**
@@ -324,11 +342,15 @@ public class Node<T> extends GeneralizedNode<T> {
     }
 
     public boolean isSame(Node<String> node) {
-        if (this.attributes.equals(node.getAttributes()) && this.getLabel().equals(node.getLabel()) &&
-        this.data.equals(node.getData())) {
-            return true;
-        } else {
+        if (this.data == null && node.getData() != null)
             return false;
+
+        if (this.attributes.equals(node.getAttributes()) && this.label.equals(node.getLabel())) {
+            if ((this.data == null && node.getData() == null) || this.data.equals(node.getData())) {
+                return true;
+            }            
         }
+
+        return false;
     }
 }

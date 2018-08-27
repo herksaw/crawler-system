@@ -46,7 +46,24 @@ public class Tree<T> implements Comparable<Tree<T>> {
      * @param element
      * @param list
      */
+    @SuppressWarnings("unchecked")
     private void preOrder(Node<T> element, List<Node<T>> list) {
+        // Removed, expensive cpu checks
+        // boolean isFound = false;
+        
+        // for (Node<T> data : list) {
+        //     if (data.isSame((Node<String>)element)) {
+        //         isFound = true;
+        //         break;
+        //     }
+        // }
+
+        // if (!isFound) list.add(element);
+
+        // for (Node<T> data : element.getChildren()) {
+        //     preOrder(data, list);
+        // }
+
         list.add(element);
         for (Node<T> data : element.getChildren()) {
             preOrder(data, list);

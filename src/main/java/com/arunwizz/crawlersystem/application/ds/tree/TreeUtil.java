@@ -109,6 +109,17 @@ public class TreeUtil {
                 for (int i = f; i < node.getChildrenSize() - 1; i += j) {
                     Float distanceij = node.getChildDistanceMatrix().getElement(j - 1, i);
                     int currentChildNodePreOrderPosition = node.getChildAt(i).getPreOrderPosition();
+                    
+                    // logger.info(distanceij);
+                    // logger.info(node.getData());
+                    // logger.info(node.getPreOrderPosition());
+                    // for (Node<String> child : new Tree<>(node).traverse(Tree.PRE_ORDER)) {
+                    //     if (child.getDuplicatedCount() == 0) {
+                    //         logger.info(child.getData());
+                    //     }
+                    // }
+                    // logger.info("----------------");
+
                     if (distanceij != null && distanceij < t) {
                         if (flag) {
                             curDR = new DataRegion(currentChildNodePreOrderPosition, i, j, 2 * j);// all index start
@@ -224,7 +235,14 @@ public class TreeUtil {
         List<Tree<String>> resultList = new ArrayList<Tree<String>>();
         resultList.add(ts);
 
+        int loopTimes = 0;
+        boolean isLeftOver = false;
+
         while (!sQ.isEmpty()) {
+            if (isLeftOver) {
+                loopTimes++;
+            }
+
             Tree<String> ti = sQ.poll();
             int matcheCount = ts.simpleTreeMatching(ti);// matches and aligns
             if (matcheCount < ti.size()) {/* if not node aligned */
@@ -232,6 +250,10 @@ public class TreeUtil {
                 if (!i) {/* if still not all aligned */
                     rQ.add(ti);
                 } else {
+                    if (isLeftOver) {
+                        loopTimes--;
+                    }
+
                     resultList.add(ti);
                 }
             }
@@ -243,6 +265,11 @@ public class TreeUtil {
                 rQ = new PriorityQueue<Tree<String>>();
                 flag = false;
                 i = false;
+                isLeftOver = true;
+            }
+
+            if (isLeftOver == true && loopTimes > 1) {
+                break;
             }
         }
 
@@ -282,9 +309,11 @@ public class TreeUtil {
     private boolean insertIntoSeed(Tree<String> ts, Tree<String> ti) {
         int unalignedCounts = 0;
 
+        boolean isSingleNode = false;
+
         for (Node<String> tiChild : ti.getRoot().getChildren()) {
             if (!tiChild.isAligned()) {
-                unalignedCounts++; 
+                unalignedCounts++;
 
                 List<Node<String>> seedChildren = ts.getRoot().getChildren();
 
@@ -295,8 +324,8 @@ public class TreeUtil {
                     }
                 } else if (tiChild.getPrevSibling() != null && tiChild.getNextSibling() != null) {
                     for (int i = 0; i < seedChildren.size() - 1; i++) {
-                        if (tiChild.getPrevSibling().isSameWithoutData(seedChildren.get(i)) && 
-                        tiChild.getNextSibling().isSameWithoutData(seedChildren.get(i + 1))) {
+                        if (tiChild.getPrevSibling().isSameWithoutData(seedChildren.get(i))
+                                && tiChild.getNextSibling().isSameWithoutData(seedChildren.get(i + 1))) {
                             seedChildren.add(i + 1, tiChild);
                             unalignedCounts--;
                             break;
@@ -309,16 +338,22 @@ public class TreeUtil {
                     }
                 } else {
                     // Only one node
-                    // Should not happened   
+                    // Should not happened
+
+                    isSingleNode = true;
                 }
             }
         }
 
-        if (unalignedCounts > 0) {
-            return false;
-        } else {
+        if (isSingleNode) {
             return true;
-        }
+        } else {
+            if (unalignedCounts > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }        
     }
 
     /**
