@@ -53,7 +53,8 @@ public class HTMLPageCrawler {
                 "https://www.digikey.com/products/en/integrated-circuits-ics/embedded-fpgas-field-programmable-gate-array-with-microcontrollers/767",
                 "http://www.newark.com/w/c/semiconductors-ics/microcontrollers-mcu/16-32-bit-microcontrollers-mcu-arm?brand=microchip&range=inc-new",
                 "https://www.nxp.com/products/processors-and-microcontrollers/arm-based-processors-and-mcus/lpc-cortex-m-mcus/lpc800-series-cortex-m0-plus-mcus:MC_71785",
-                "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/16bit/#ac01" };
+                "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/16bit/#ac01",
+                "http://unruffled-leakey-d4e14a.bitballoon.com"};
 
         String[] urlReferenceList = new String[] {
                 "https://www.microchipdirect.com/Chart.aspx?branchId=8197&mid=14&treeid=8",
@@ -62,12 +63,16 @@ public class HTMLPageCrawler {
                 "https://www.digikey.com/products/en/integrated-circuits-ics/interface-analog-switches-special-purpose/780",
                 "https://www.newark.com/c/semiconductors-ics/microcontrollers-mcu/8-bit-microcontrollers-mcu",
                 "https://www.nxp.com/products/processors-and-microcontrollers/arm-based-processors-and-mcus/lpc-cortex-m-mcus/lpc54000-series-cortex-m4-mcus:MC_1414576688124",
-                "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/8bit/" };
+                "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/8bit/",
+                "https://unruffled-leakey-d4e14a.netlify.com/p2.html"};
 
-        Integer index = 5;
-        boolean useFixedThreshold = false;
-        float t = 0.3f;
+        Integer index = 6;
+        boolean useFixedThreshold = true;
+        float t = 1.6f;
         float thresholdStep = 0.1f;
+
+        float thresholdBreak = t;
+        boolean useThresholdBreak = false;
 
         String url_str = urlList[index];
         String url_refer_str = urlReferenceList[index];
@@ -146,6 +151,8 @@ public class HTMLPageCrawler {
         List<Node<String>> uniqueNodeList = new ArrayList<Node<String>>();
         Map<Integer, Node<String>> uniqueNodeMap = new HashMap<Integer, Node<String>>();
 
+        List<Node<String>> outputNodeList = new ArrayList<>();
+
         for (Node<String> child : pageTree.traverse(Tree.PRE_ORDER)) {
             for (Node<String> childRefer : pageReferTree.traverse(Tree.PRE_ORDER)) {
                 if (child.isSame(childRefer)) {
@@ -155,6 +162,7 @@ public class HTMLPageCrawler {
             }
         }
 
+        int count = 0;
         for (Node<String> child : pageTree.traverse(Tree.PRE_ORDER)) {
             if (child.getDuplicatedCount() == 0) {
                 if (child.getData() != null && !child.getData().equals("")) {
@@ -168,9 +176,12 @@ public class HTMLPageCrawler {
                     }
 
                     if (!hasFound) {
+                        count++;
+                        child.setCountIndex(count);
+
                         uniqueNodeList.add(child);
                         uniqueNodeMap.put(child.getPreOrderPosition(), child);
-                        logger.info(child.getData());
+                        logger.info(child.getData() + ", c" + count);
                     }
 
                     // uniqueNodeMap.put(child.getPreOrderPosition(), true);
@@ -193,6 +204,8 @@ public class HTMLPageCrawler {
         int uniqueCount = uniqueNodeList.size();
 
         while (true) {
+            outputNodeList = new ArrayList<>();
+
             if (useFixedThreshold != true) {
                 t += thresholdStep;
             }
@@ -222,19 +235,19 @@ public class HTMLPageCrawler {
 
             List<List<List<String>>> outputTable = new ArrayList<List<List<String>>>();
 
-            int indexTest = -1;
+//            int indexTest = -1;
             for (List<GeneralizedNode<Node<String>>> dr : drList) {
-                indexTest++;
-                logger.info("DR i: " + indexTest);
+//                indexTest++;
+                // logger.info("DR i: " + indexTest);
 
                 // logger.info(dr);
 
                 /* for each data region */
                 PriorityQueue<Tree<String>> dataRecordQueue = tutil.buildDataRecrodTree(dr);
 
-                if (indexTest == 14) {
-                    boolean flag = true;
-                }
+//                if (indexTest == 14) {
+//                    boolean flag = true;
+//                }
 
                 List<Tree<String>> alignedDataRecords = tutil.partialTreeAlignment(dataRecordQueue);
 
@@ -245,10 +258,10 @@ public class HTMLPageCrawler {
 
                 List<List<String>> outputRows = new ArrayList<List<String>>();
 
-                int indexTest2 = -1;
+//                int indexTest2 = -1;
                 for (Tree<String> tree : alignedDataRecords) {
-                    indexTest2++;
-                    logger.info("Tree i: " + indexTest2);
+//                    indexTest2++;
+                    // logger.info("Tree i: " + indexTest2);
 
                     // for (Node<String> child : tree.traverse(Tree.PRE_ORDER)) {
                     // System.out.println(child.getData());
@@ -262,7 +275,7 @@ public class HTMLPageCrawler {
                             break;
                         }
                     }
-                    
+
                     if (hasUniqueNode) {
                         if (tree.getRoot().getChildren().size() > 0) {
                             Node<String> currChild = tree.getRoot().getChildren().get(0);
@@ -290,7 +303,13 @@ public class HTMLPageCrawler {
                                             }
 
                                             if (!hasFound) {
-                                                temp += subChild.getData() + " | ";
+//                                                logger.info(subChild.getData());
+
+//                                                temp += subChild.getData() +
+//                                                        "(" + subChild.getDistanceij() + ")" +
+//                                                        /*" " + (subChild.getDuplicatedCount() == 0 ? "true" : "false") +*/
+//                                                        /*" " + subChild.getDuplicatedCount() +*/
+//                                                        " | ";
 
                                                 // for (Node<String> uniqueNode : uniqueNodeList) {
                                                 // if (uniqueNode.isSame(subChild) && uniqueNode.getHasMatched() ==
@@ -302,10 +321,18 @@ public class HTMLPageCrawler {
                                                 // }
 
                                                 if (subChild.getDuplicatedCount() == 0
-                                                        && !subChild.getData().equals("")) {
+                                                        /*&& !subChild.getData().equals("")*/) {
                                                     if (uniqueNodeMap.containsKey(subChild.getPreOrderPosition())) {
+                                                        temp += subChild.getData() +
+                                                                "(" + subChild.getDistanceij() + ")" +
+                                                                /*" " + (subChild.getDuplicatedCount() == 0 ? "true" : "false") +*/
+                                                                " c" + subChild.getCountIndex() +
+                                                                " h" + subChild.height() +
+                                                                " | ";
+
                                                         uniqueNodeMap.get(subChild.getPreOrderPosition()).setIsMatched(true);
-                                                    }                                                    
+                                                        outputNodeList.add(subChild);
+                                                    }
                                                 }
 
                                                 // logger.info(subChild.getPreOrderPosition());
@@ -352,32 +379,111 @@ public class HTMLPageCrawler {
                 }
             }
 
-            logger.info("Current threshold: " + String.valueOf(t));
-            logger.info("Matched unique counts: " + String.valueOf(matchedCount));
-            logger.info("Total unique counts: " + String.valueOf(uniqueCount));
-            logger.info("=================================");
-
-            if (useFixedThreshold != true) {
-                if (matchedCount == uniqueCount /*|| oldCount > matchedCount*/) {
-                    logger.info("Done.");
-                    break;
-                } else {
-                    oldCount = matchedCount;
-
-                    try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
-                            + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
-                        new GsonBuilder().create().toJson(outputFile, writer);
-                    }
-                }
-            } else {
+            if (useFixedThreshold) {
                 try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
                         + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
                     new GsonBuilder().create().toJson(outputFile, writer);
                 }
 
-                logger.info("Done.");
-                break;
+                for (Node node : outputNodeList) {
+                    logger.info(node.getData() + " - " + node.getDistanceij());
+                }
             }
+
+            logger.info("Current threshold: " + String.valueOf(t));
+            logger.info("Matched unique counts: " + String.valueOf(matchedCount));
+            logger.info("Total unique counts: " + String.valueOf(uniqueCount));
+            logger.info("=================================");
+
+//            if (matchedCount >= uniqueCount) {
+//                try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                        + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                    new GsonBuilder().create().toJson(outputFile, writer);
+//                }
+//            }
+
+            if (useThresholdBreak != true) {
+                if (useFixedThreshold != true) {
+                    if (matchedCount >= uniqueCount /*|| oldCount > matchedCount*/) {
+//                            logger.info(outputFile.size());
+
+                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+                            new GsonBuilder().create().toJson(outputFile, writer);
+                        }
+
+                        for (Node node : outputNodeList) {
+                            logger.info(node.getData() + " - " + node.getDistanceij());
+                        }
+
+                        logger.info("Current threshold: " + String.valueOf(t));
+                        logger.info("Matched unique counts: " + String.valueOf(matchedCount));
+                        logger.info("Total unique counts: " + String.valueOf(uniqueCount));
+                        logger.info("=================================");
+
+                        logger.info("Done.");
+                        break;
+                    }
+                    else {
+                        // oldCount = matchedCount;
+
+//                        logger.info(outputFile.size());
+
+//                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                            new GsonBuilder().create().toJson(outputFile, writer);
+//                        }
+                    }
+                } else {
+//                    try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                            + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                        new GsonBuilder().create().toJson(outputFile, writer);
+//                    }
+
+                    logger.info("Done.");
+                    break;
+                }
+            } else {
+                if (t >= thresholdBreak) {
+                    logger.info("Done.");
+                    break;
+                }
+            }
+
+//            if (useThresholdBreak != true) {
+//                if (useFixedThreshold != true) {
+//                    if (matchedCount >= uniqueCount /*|| oldCount > matchedCount*/) {
+//                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                            new GsonBuilder().create().toJson(outputFile, writer);
+//                        }
+//
+//                        logger.info("Done.");
+//                        break;
+//                    }
+////                    else {
+////                        // oldCount = matchedCount;
+////
+////                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+////                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+////                            new GsonBuilder().create().toJson(outputFile, writer);
+////                        }
+////                    }
+//                } else {
+//                    try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                            + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                        new GsonBuilder().create().toJson(outputFile, writer);
+//                    }
+//
+//                    logger.info("Done.");
+//                    break;
+//                }
+//            } else {
+//                if (t >= thresholdBreak) {
+//                    logger.info("Done.");
+//                    break;
+//                }
+//            }
 
             // logger.info(pageTree);
 

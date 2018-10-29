@@ -22,9 +22,9 @@ import com.arunwizz.crawlersystem.application.ds.tree.GeneralizedNode.DataRecord
 
 /**
  * Thread unsafe utility class
- * 
+ *
  * @author Arun_Yadav
- * 
+ *
  */
 public class TreeUtil {
 
@@ -92,8 +92,8 @@ public class TreeUtil {
         DataRegion maxDR = new DataRegion(0, 0, 0, 0);// 1
         DataRegion curDR = new DataRegion(0, 0, 0, 0);// 8
         for (int j = 1; j <= Math.min(k, node.getChildrenSize() / 2); j++) {/*
-                                                                             * for each j - combination
-                                                                             */
+         * for each j - combination
+         */
             // 2//think
             // need
             // to
@@ -109,7 +109,7 @@ public class TreeUtil {
                 for (int i = f; i < node.getChildrenSize() - 1; i += j) {
                     Float distanceij = node.getChildDistanceMatrix().getElement(j - 1, i);
                     int currentChildNodePreOrderPosition = node.getChildAt(i).getPreOrderPosition();
-                    
+
                     // logger.info(distanceij);
                     // logger.info(node.getData());
                     // logger.info(node.getPreOrderPosition());
@@ -123,8 +123,14 @@ public class TreeUtil {
                     if (distanceij != null && distanceij < t) {
                         if (flag) {
                             curDR = new DataRegion(currentChildNodePreOrderPosition, i, j, 2 * j);// all index start
-                                                                                                  // with 0
+                            // with 0
                             flag = false;
+
+                            Node childNode = node.getChildAt(i);
+
+                            if (childNode.getDuplicatedCount() == 0) {
+                                childNode.setDistanceij(distanceij);
+                            }
                         } else {
                             curDR.setNodeCount(curDR.getNodeCount() + j);
                         }
@@ -170,7 +176,7 @@ public class TreeUtil {
     /**
      * Refer to Figure 6: The structure comparison algorithm, pg# 5 of "Mining data
      * records of web pages" by, Bing Liu
-     * 
+     *
      * @param children
      * @param maxComb
      */
@@ -184,17 +190,17 @@ public class TreeUtil {
         node.setChildDistanceMatrix(new Matrix<Float>(maxComb, children.size()));
         /* for each node */
         for (int i = 0; i < Math.min(maxComb, node.getChildrenSize() / 2); i++) {// added
-                                                                                 // child.size/2
-                                                                                 // to
-                                                                                 // avoid
-                                                                                 // computing
-                                                                                 // edit
-                                                                                 // distance
-                                                                                 // for
-                                                                                 // i
-                                                                                 // >
-                                                                                 // child
-                                                                                 // size
+            // child.size/2
+            // to
+            // avoid
+            // computing
+            // edit
+            // distance
+            // for
+            // i
+            // >
+            // child
+            // size
             /* for each combination */
             for (int j = i + 1; j <= maxComb && (i + 2 * j - 1) < children.size(); j++) {
                 /*
@@ -210,11 +216,11 @@ public class TreeUtil {
                     if (k + j - 1 < children.size()) {
                         float nd = normalizedEditDistance(children, st, k, k + j - 1);
                         node.getChildDistanceMatrix().setElement(j - 1, st, nd);// at
-                                                                                // jth
-                                                                                // combination
-                                                                                // for
-                                                                                // ith
-                                                                                // node
+                        // jth
+                        // combination
+                        // for
+                        // ith
+                        // node
                         st = k;
                     }
                 }
@@ -353,7 +359,7 @@ public class TreeUtil {
             } else {
                 return true;
             }
-        }        
+        }
     }
 
     /**
@@ -399,7 +405,7 @@ public class TreeUtil {
                             } else {
                                 similarChildren = false;
                                 break;// no need to check further, treat as non
-                                      // similar
+                                // similar
                             }
                         }
                     }
@@ -449,7 +455,7 @@ public class TreeUtil {
                         } else {
                             similarChildren = false;
                             break;// no need to check further, treat as non
-                                  // similar
+                            // similar
                         }
                     }
                 }
@@ -468,50 +474,50 @@ public class TreeUtil {
         for (int i = 0; i < dr.size(); i++) {
             GeneralizedNode<Node<String>> g = dr.get(i);
             if (i == 0) {/*
-                          * if its first generalized node, read the information about data record
-                          */
+             * if its first generalized node, read the information about data record
+             */
                 di = g.dataRecordIndecator;
             }
             if (g.size() == 1) {
                 switch (di) {
-                case SELF:
-                    dataRecrodQueue.add(new Tree<String>(g.get(0)));
-                    break;
-                case CHILD_CONT:
-                    for (Node<String> child : g.get(0).getChildren()) {
-                        dataRecrodQueue.add(new Tree<String>(child));
-                        // make sub
-                        // tree for
-                        // data
-                        // record
-                    }
-                    break;
-                case CHILD_NON_CONT:
-                    // TODO: THIS SHOULD NOT HAPPEN
-                    break;
+                    case SELF:
+                        dataRecrodQueue.add(new Tree<String>(g.get(0)));
+                        break;
+                    case CHILD_CONT:
+                        for (Node<String> child : g.get(0).getChildren()) {
+                            dataRecrodQueue.add(new Tree<String>(child));
+                            // make sub
+                            // tree for
+                            // data
+                            // record
+                        }
+                        break;
+                    case CHILD_NON_CONT:
+                        // TODO: THIS SHOULD NOT HAPPEN
+                        break;
                 }
             } else /* multiple tag nodes */ {
                 // TODO: not implemented completely, test findRecordN first
                 Tree<String> tagTree = new Tree<String>(new Node<String>("p"));
                 switch (di) {
-                case SELF:
-                    for (Node<String> self : g) {
-                        tagTree.getRoot().addChild(self);
-                    }
-                    dataRecrodQueue.add(tagTree);
-                    break;
-                case CHILD_CONT:
-                    // TODO: THIS SHOULD NOT HAPPEN
-                    break;
-                case CHILD_NON_CONT:
-                    for (int j = 0; j < g.get(0).getChildrenSize(); j++) {/* for each child */
-                        tagTree = new Tree<String>(new Node<String>("p"));
-                        for (Node<String> tagNode : g) {
-                            tagTree.getRoot().addChild(tagNode.getChildAt(j));
+                    case SELF:
+                        for (Node<String> self : g) {
+                            tagTree.getRoot().addChild(self);
                         }
                         dataRecrodQueue.add(tagTree);
-                    }
-                    break;
+                        break;
+                    case CHILD_CONT:
+                        // TODO: THIS SHOULD NOT HAPPEN
+                        break;
+                    case CHILD_NON_CONT:
+                        for (int j = 0; j < g.get(0).getChildrenSize(); j++) {/* for each child */
+                            tagTree = new Tree<String>(new Node<String>("p"));
+                            for (Node<String> tagNode : g) {
+                                tagTree.getRoot().addChild(tagNode.getChildAt(j));
+                            }
+                            dataRecrodQueue.add(tagTree);
+                        }
+                        break;
                 }
             }
         }
@@ -520,7 +526,7 @@ public class TreeUtil {
 
     /**
      * Return list of rooted Tree for every data records in all data regions.
-     * 
+     *
      * @return
      */
     public List<List<GeneralizedNode<Node<String>>>> getDRs(Tree<String> pageTree) {
@@ -532,21 +538,21 @@ public class TreeUtil {
         List<List<GeneralizedNode<Node<String>>>> drList = new ArrayList<List<GeneralizedNode<Node<String>>>>();
 
         for (DataRegion dr : pageTree.getRoot().getDataRegions()) {// for each
-                                                                   // data
-                                                                   // region
+            // data
+            // region
             List<GeneralizedNode<Node<String>>> generalizedNodeList = new ArrayList<GeneralizedNode<Node<String>>>();
             Node<String> tagNode = null;
             for (int i = 0; i < dr.getNodeCount() / dr.getNodeComb(); i++) {// for
-                                                                            // each
-                                                                            // generailzed
-                                                                            // node
+                // each
+                // generailzed
+                // node
                 GeneralizedNode<Node<String>> g = new GeneralizedNode<Node<String>>();
                 // Tree<String> tempGeneralizedNodeTree = new Tree<String>(new
                 // Node<String>("g"));//dummy root for generalized node
                 for (int j = 0; j < dr.getNodeComb(); j++) {// for each tag node
                     if (i == 0 && j == 0) {/*
-                                            * first tag tree of first generalized node
-                                            */
+                     * first tag tree of first generalized node
+                     */
                         tagNode = pageTree.getSubTreeByPreOrder(dr.getRegionStartPreOrderPosition()).getRoot();
                         g.add(tagNode);
                     } else {/* remaining tag tree is sibling */
@@ -566,7 +572,7 @@ public class TreeUtil {
      * computes normalized edit distance between two sub tree strings. The arguments
      * are positional index based on counting starting from 1, so we need to reduce
      * by 1, as Java list counting start with 0
-     * 
+     *
      * @param children
      * @param st       - first combination start position
      * @param k        - next combination start position
@@ -586,6 +592,14 @@ public class TreeUtil {
         }
         String str2 = swSecond.toString();
 
+//        for (Node node : children) {
+////            logger.info(node.getData());
+//            if (node.getDuplicatedCount() == 0 && node.getData() != null /*&& node.getData().equals("BC32725BU")*/) {
+//                logger.info(node.getData());
+////                break;
+//            }
+//        }
+
         Date d1 = new Date();
         int editDistance = xlevenshteinDistance(str1, str2);
         logger.debug("xeditDistance:" + editDistance + "[" + (new Date().getTime() - d1.getTime()) + " ms]");
@@ -599,14 +613,14 @@ public class TreeUtil {
          * normalized edit distance = edit distance divided by mean length of two
          * strings
          */
-        BigDecimal meanLength = new BigDecimal(str1.length() + str2.length() / 2.0);
+        BigDecimal meanLength = new BigDecimal((str1.length() + str2.length()) / 2.0);
         BigDecimal normalizedEditDistance = new BigDecimal(editDistance).divide(meanLength, 1, RoundingMode.HALF_UP);
         return normalizedEditDistance.floatValue();
     }
 
     /**
      * Based on LevenshteinDistance algorithm
-     * 
+     *
      * @param firstString
      * @param secondString
      * @return
@@ -646,7 +660,7 @@ public class TreeUtil {
     /**
      * Optimize method, to avoid java heap space, Based on LevenshteinDistance
      * algorithm
-     * 
+     *
      * @param firstString
      * @param secondString
      * @return

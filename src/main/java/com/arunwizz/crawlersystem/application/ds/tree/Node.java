@@ -12,11 +12,11 @@ import com.arunwizz.crawlersystem.application.ds.matrix.Matrix;
 public class Node<T> extends GeneralizedNode<T> {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -6653077195227044067L;
     /**
-     * 
+     *
      */
     /**
      * Assuming its a tree node, else this should be List for graphs
@@ -35,6 +35,26 @@ public class Node<T> extends GeneralizedNode<T> {
     private int relativePosition;// relative to siblings
     private int duplicatedCount = 0;
     private boolean isMatched = false;
+
+    public int getCountIndex() {
+        return countIndex;
+    }
+
+    public void setCountIndex(int countIndex) {
+        this.countIndex = countIndex;
+    }
+
+    private int countIndex = 0;
+
+    public float getDistanceij() {
+        return distanceij;
+    }
+
+    public void setDistanceij(float distanceij) {
+        this.distanceij = distanceij;
+    }
+
+    private float distanceij = 0.0f;
 
     // TODO: remove this constructor, once addChild handles the preorder position
     public Node(int preOrderPosition) {
@@ -200,7 +220,7 @@ public class Node<T> extends GeneralizedNode<T> {
     /**
      * currently unused, shall be useful when addChild itself takes care of
      * pre-order position
-     * 
+     *
      * @return
      */
     private int getCurrentPreOrderPosition() {
@@ -213,7 +233,7 @@ public class Node<T> extends GeneralizedNode<T> {
 
     /**
      * adds a child node to this node
-     * 
+     *
      * @param child
      */
     public void addChild(Node<T> child) {
@@ -348,7 +368,7 @@ public class Node<T> extends GeneralizedNode<T> {
         if (this.attributes.equals(node.getAttributes()) && this.label.equals(node.getLabel())) {
             if ((this.data == null && node.getData() == null) || this.data.equals(node.getData())) {
                 return true;
-            }            
+            }
         }
 
         return false;
