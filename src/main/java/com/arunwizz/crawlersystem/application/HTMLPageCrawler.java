@@ -67,9 +67,9 @@ public class HTMLPageCrawler {
                 "https://unruffled-leakey-d4e14a.netlify.com/p2.html"};
 
         Integer index = 6;
-        boolean useFixedThreshold = true;
-        float t = 1.6f;
-        float thresholdStep = 0.1f;
+        boolean useFixedThreshold = false;
+        float t = 0.0f;
+        float thresholdStep = 0.01f;
 
         float thresholdBreak = t;
         boolean useThresholdBreak = false;
@@ -211,6 +211,9 @@ public class HTMLPageCrawler {
             }
 
             tutil.mdr(pageTree.getRoot(), k);
+
+            tutil.normalizeNodesDistance(pageTree.getRoot());
+
             tutil.findDR(pageTree.getRoot(), k, t);
 
             List<List<GeneralizedNode<Node<String>>>> drList = tutil.getDRs(pageTree);
@@ -324,10 +327,10 @@ public class HTMLPageCrawler {
                                                         /*&& !subChild.getData().equals("")*/) {
                                                     if (uniqueNodeMap.containsKey(subChild.getPreOrderPosition())) {
                                                         temp += subChild.getData() +
-                                                                "(" + subChild.getDistanceij() + ")" +
-                                                                /*" " + (subChild.getDuplicatedCount() == 0 ? "true" : "false") +*/
+                                                                /*"(" + subChild.getDistanceij() + ")" +
+                                                                " " + (subChild.getDuplicatedCount() == 0 ? "true" : "false") +
                                                                 " c" + subChild.getCountIndex() +
-                                                                " h" + subChild.height() +
+                                                                " h" + subChild.height() +*/
                                                                 " | ";
 
                                                         uniqueNodeMap.get(subChild.getPreOrderPosition()).setIsMatched(true);

@@ -29,6 +29,7 @@ import com.arunwizz.crawlersystem.application.ds.tree.GeneralizedNode.DataRecord
 public class TreeUtil {
 
     private Log logger = LogFactory.getLog(TreeUtil.class);
+    private int maxEditDistance = 0;
 
     public Tree<String> getTreeFromDOM(Document document) {
         DocumentTraversal traversal = (DocumentTraversal) document;
@@ -119,6 +120,8 @@ public class TreeUtil {
                     //     }
                     // }
                     // logger.info("----------------");
+
+//                    logger.info(distanceij);
 
                     if (distanceij != null && distanceij < t) {
                         if (flag) {
@@ -225,6 +228,23 @@ public class TreeUtil {
                     }
                 }
                 // }
+            }
+        }
+    }
+
+    public void normalizeNodesDistance(Node<String> root) {
+        List<Node<String>> nodeList = new Tree<String>(root).traverse(Tree.PRE_ORDER);
+
+        for (Node<String> node : nodeList) {
+            Matrix<Float> matrix = node.getChildDistanceMatrix();
+
+            if (matrix != null) {
+                for (int i = 0; i < matrix.getRowSize(); i++) {
+                    for (int j = 0; j < matrix.getColSize(); j++) {
+                        if (matrix.getElement(i, j) != null && matrix.getElement(i, j) != 0)
+                            matrix.setElement(i, j, matrix.getElement(i, j) / maxEditDistance);
+                    }
+                }
             }
         }
     }
@@ -613,9 +633,16 @@ public class TreeUtil {
          * normalized edit distance = edit distance divided by mean length of two
          * strings
          */
-        BigDecimal meanLength = new BigDecimal((str1.length() + str2.length()) / 2.0);
-        BigDecimal normalizedEditDistance = new BigDecimal(editDistance).divide(meanLength, 1, RoundingMode.HALF_UP);
-        return normalizedEditDistance.floatValue();
+//        BigDecimal meanLength = new BigDecimal((str1.length() + str2.length()) / 2.0);
+//        BigDecimal normalizedEditDistance = new BigDecimal(editDistance).divide(meanLength, 1, RoundingMode.HALF_UP);
+//
+//        return normalizedEditDistance.floatValue();
+
+        if (editDistance > maxEditDistance) {
+            maxEditDistance = editDistance;
+        }
+
+        return editDistance;
     }
 
     /**
@@ -703,6 +730,7 @@ public class TreeUtil {
         int distance = row0Distance[str2.length()];
         // logger.debug("levenshtein distance for strings " + str1 + " and " +
         // str2 + "is: " + distance);
+
         return distance;
     }
 
