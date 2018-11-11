@@ -66,7 +66,7 @@ public class HTMLPageCrawler {
                 "https://global.epson.com/products_and_drivers/semicon/products/micro_controller/8bit/",
                 "https://unruffled-leakey-d4e14a.netlify.com/p2.html"};
 
-        Integer index = 6;
+        Integer index = 1;
         boolean useFixedThreshold = false;
         float t = 0.0f;
         float thresholdStep = 0.01f;
@@ -410,10 +410,10 @@ public class HTMLPageCrawler {
                     if (matchedCount >= uniqueCount /*|| oldCount > matchedCount*/) {
 //                            logger.info(outputFile.size());
 
-                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
-                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
-                            new GsonBuilder().create().toJson(outputFile, writer);
-                        }
+//                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+//                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+//                            new GsonBuilder().create().toJson(outputFile, writer);
+//                        }
 
                         for (Node node : outputNodeList) {
                             logger.info(node.getData() + " - " + node.getDistanceij());
@@ -432,10 +432,10 @@ public class HTMLPageCrawler {
 
 //                        logger.info(outputFile.size());
 
-//                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
-//                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
-//                            new GsonBuilder().create().toJson(outputFile, writer);
-//                        }
+                        try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"
+                                + urlList[index].replaceAll("[\\\\/:*?\"<>|]", "") + ".json")) {
+                            new GsonBuilder().create().toJson(outputFile, writer);
+                        }
                     }
                 } else {
 //                    try (Writer writer = new FileWriter(System.getProperty("user.dir") + "/output/"

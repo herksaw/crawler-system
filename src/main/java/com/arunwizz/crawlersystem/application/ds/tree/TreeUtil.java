@@ -3,11 +3,7 @@ package com.arunwizz.crawlersystem.application.ds.tree;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -601,16 +597,31 @@ public class TreeUtil {
     private float normalizedEditDistance(List<Node<String>> children, int st, int k, int en) {
         List<Node<String>> firstChildList = children.subList(st, k);
         List<Node<String>> secondChildList = children.subList(k, en + 1);
-        StringWriter swFirst = new StringWriter();
-        for (Node<String> child : firstChildList) {
-            swFirst.append(child.toPreOrderString());
-        }
-        String str1 = swFirst.toString();
-        StringWriter swSecond = new StringWriter();
-        for (Node<String> child : secondChildList) {
-            swSecond.append(child.toPreOrderString());
-        }
-        String str2 = swSecond.toString();
+
+        // Character edit distance
+//        StringWriter swFirst = new StringWriter();
+//        for (Node<String> child : firstChildList) {
+//            swFirst.append(child.toPreOrderString());
+//        }
+//        String str1 = swFirst.toString();
+//        StringWriter swSecond = new StringWriter();
+//        for (Node<String> child : secondChildList) {
+//            swSecond.append(child.toPreOrderString());
+//        }
+//        String str2 = swSecond.toString();
+//        int editDistance = xlevenshteinDistance(str1, str2);
+
+          List<String> lsFirst = new ArrayList<>();
+          for (Node<String> child : firstChildList) {
+              lsFirst.addAll(child.toPreOrderStringList());
+          }
+
+          List<String> lsSecond = new ArrayList<>();
+          for (Node<String> child : secondChildList) {
+              lsSecond.addAll(child.toPreOrderStringList());
+          }
+
+          int editDistance = xlevenshteinDistanceList(lsFirst, lsSecond);
 
 //        for (Node node : children) {
 ////            logger.info(node.getData());
@@ -620,9 +631,9 @@ public class TreeUtil {
 //            }
 //        }
 
-        Date d1 = new Date();
-        int editDistance = xlevenshteinDistance(str1, str2);
-        logger.debug("xeditDistance:" + editDistance + "[" + (new Date().getTime() - d1.getTime()) + " ms]");
+        // Character edit distance
+//        Date d1 = new Date();
+//        logger.debug("xeditDistance:" + editDistance + "[" + (new Date().getTime() - d1.getTime()) + " ms]");
 
         // d1 = new Date();
         // logger.info("leditDistance:" + levenshteinDistance(str1, str2) + "["
@@ -728,6 +739,48 @@ public class TreeUtil {
         }
 
         int distance = row0Distance[str2.length()];
+        // logger.debug("levenshtein distance for strings " + str1 + " and " +
+        // str2 + "is: " + distance);
+
+        return distance;
+    }
+
+    private int xlevenshteinDistanceList(List<String> ls1, List<String> ls2) {
+        // logger.debug("computing levenshtein distance for strings " + str1 +
+        // " and " + str2);
+
+        // this will further reduce the space by using shorter for array.
+        if (ls2.size() > ls1.size()) {
+            List<String> temp = ls1;
+            ls1 = ls2;
+            ls2 = temp;
+        }
+
+        int[] row0Distance = new int[ls2.size() + 1];
+        int[] row1Distance = new int[ls2.size() + 1];
+
+        int rowId = 0, columnId = 0;
+
+        for (columnId = 0; columnId <= ls2.size(); columnId++)
+            row0Distance[columnId] = columnId;
+
+        for (rowId = 1; rowId <= ls1.size(); rowId++) {
+            for (columnId = 0; columnId <= ls2.size(); columnId++) {
+                if (columnId == 0) {
+                    row1Distance[columnId] = rowId;
+                } else {
+                    row1Distance[columnId] = Math.min(
+                            Math.min(row0Distance[columnId] + 1, row1Distance[columnId - 1] + 1),
+                            row0Distance[columnId - 1]
+                                    + ((ls1.get(rowId - 1).equals(ls2.get(columnId - 1))) ? 0 : 1));
+                }
+            }
+            // discard row0, and make row1 as as row0 for next loop
+            row0Distance = row1Distance;
+            row1Distance = new int[ls2.size() + 1];
+        }
+
+        int distance = row0Distance[ls2.size()];
         // logger.debug("levenshtein distance for strings " + str1 + " and " +
         // str2 + "is: " + distance);
 

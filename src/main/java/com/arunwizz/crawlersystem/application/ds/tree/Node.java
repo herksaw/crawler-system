@@ -323,6 +323,15 @@ public class Node<T> extends GeneralizedNode<T> {
         return sw.toString();
     }
 
+    public List<String> toPreOrderStringList() {
+        List<String> ls = new ArrayList<>();
+        ls.add(this.label.toString());
+        for (Node<T> child : getChildren()) {
+            ls.addAll(child.toPreOrderStringList());
+        }
+        return ls;
+    }
+
     private void preOrderPrint(Node<T> rootNode, StringWriter stringWriter, String indent) {
         stringWriter.write(indent + "-" + rootNode.getLabel() + "[" + rootNode.getData() + "]" + "{"
                 + rootNode.getPreOrderPosition() + "}" + System.getProperty("line.separator"));

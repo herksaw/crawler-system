@@ -4,11 +4,13 @@
     <list default="true" id="df973929-cd10-4c6b-bd29-d4baaf5755a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/httpsglobal.epson.comproducts_and_driverssemiconproductsmicro_controller16bit#ac01.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpsglobal.epson.comproducts_and_driverssemiconproductsmicro_controller16bit#ac01.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/httpswww.arrow.comenmanufacturersmicrochip-technologymicrocontrollers-and-processorsmicrocontrollers.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpswww.arrow.comenmanufacturersmicrochip-technologymicrocontrollers-and-processorsmicrocontrollers.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/httpswww.digikey.comproductsenintegrated-circuits-icsembedded-fpgas-field-programmable-gate-array-with-microcontrollers767.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpswww.digikey.comproductsenintegrated-circuits-icsembedded-fpgas-field-programmable-gate-array-with-microcontrollers767.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/httpswww.microchipdirect.comChart.aspxbranchId=30044&amp;mid=14&amp;treeid=3101.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpswww.microchipdirect.comChart.aspxbranchId=30044&amp;mid=14&amp;treeid=3101.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/httpswww.nxp.comproductsprocessors-and-microcontrollersarm-based-processors-and-mcuslpc-cortex-m-mcuslpc800-series-cortex-m0-plus-mcusMC_71785.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpswww.nxp.comproductsprocessors-and-microcontrollersarm-based-processors-and-mcuslpc-cortex-m-mcuslpc800-series-cortex-m0-plus-mcusMC_71785.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/httpswww.schukat.comschukatschukat_cms_en.nsfindexCMSDF15D356B046D53BC1256D550038A9E0OpenDocument&amp;wg=U1232&amp;refDoc=CMS322921A477B31844C125707B0034EB15.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpswww.schukat.comschukatschukat_cms_en.nsfindexCMSDF15D356B046D53BC1256D550038A9E0OpenDocument&amp;wg=U1232&amp;refDoc=CMS322921A477B31844C125707B0034EB15.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/httpwww.newark.comwcsemiconductors-icsmicrocontrollers-mcu16-32-bit-microcontrollers-mcu-armbrand=microchip&amp;range=inc-new.json" beforeDir="false" afterPath="$PROJECT_DIR$/output/httpwww.newark.comwcsemiconductors-icsmicrocontrollers-mcu16-32-bit-microcontrollers-mcu-armbrand=microchip&amp;range=inc-new.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/HTMLPageCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/HTMLPageCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,9 +25,10 @@
     <session id="472661050">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.18" value="3" />
           <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.21" value="2" />
           <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.25" value="1" />
@@ -33,7 +36,7 @@
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="3" />
-          <entry key="project.opened" value="14" />
+          <entry key="project.opened" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -50,13 +53,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2096" />
+          <entry key="java" value="3266" />
           <entry key="xml" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2096" />
+          <entry key="JAVA" value="3266" />
           <entry key="XML" value="7" />
         </counts>
       </usages-collector>
@@ -72,8 +75,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/HTMLPageCrawler.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="202" column="25" lean-forward="true" selection-start-line="202" selection-start-column="25" selection-end-line="202" selection-end-column="25" />
+                <state relative-caret-position="371">
+                  <caret line="68" column="25" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
                 </state>
               </provider>
             </entry>
@@ -81,8 +84,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4080">
-                  <caret line="258" column="57" selection-start-line="258" selection-start-column="57" selection-end-line="258" selection-end-column="57" />
+                <state relative-caret-position="221">
+                  <caret line="611" column="62" lean-forward="true" selection-start-line="611" selection-start-column="62" selection-end-line="611" selection-end-column="62" />
                 </state>
               </provider>
             </entry>
@@ -163,8 +166,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/HTMLPageCrawler.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="339">
-                  <caret line="68" column="25" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+                <state relative-caret-position="285">
+                  <caret line="438" column="21" selection-start-line="438" selection-start-column="21" selection-end-line="438" selection-end-column="21" />
                 </state>
               </provider>
             </entry>
@@ -172,8 +175,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="12053">
-                  <caret line="727" column="9" selection-start-line="727" selection-start-column="9" selection-end-line="727" selection-end-column="9" />
+                <state relative-caret-position="318">
+                  <caret line="771" column="43" lean-forward="true" selection-start-line="771" selection-start-column="43" selection-end-line="771" selection-end-column="43" />
                 </state>
               </provider>
             </entry>
@@ -181,8 +184,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/Node.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1683">
-                  <caret line="144" selection-start-line="144" selection-end-line="144" />
+                <state relative-caret-position="383">
+                  <caret line="326" column="44" selection-start-line="326" selection-start-column="44" selection-end-line="326" selection-end-column="44" />
                 </state>
               </provider>
             </entry>
@@ -202,9 +205,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>0.5</find>
-      <find>distance</find>
-      <find>0.7</find>
       <find>uniqueN</find>
       <find>to Contentsaria</find>
       <find>1.5</find>
@@ -232,6 +232,9 @@
       <find>distanceij</find>
       <find>tree</find>
       <find>logger.info</find>
+      <find>toPreorderstring</find>
+      <find>levenshtein</find>
+      <find>normalizedEdit</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -276,7 +279,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -285,87 +288,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crawlersystem" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crawlersystem" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crawlersystem" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-              <item name="ds" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crawlersystem" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-              <item name="ds" type="462c0819:PsiDirectoryNode" />
-              <item name="matrix" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="crawler-system" type="b2602c69:ProjectViewProjectNode" />
-              <item name="crawler-system" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crawlersystem" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540779389396" />
@@ -594,30 +517,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/DataRegion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12053">
-          <caret line="727" column="9" selection-start-line="727" selection-start-column="9" selection-end-line="727" selection-end-column="9" />
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1683">
-          <caret line="144" selection-start-line="144" selection-end-line="144" />
+        <state relative-caret-position="391">
+          <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/DataRegion.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/ds/tree/TreeUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+        <state relative-caret-position="221">
+          <caret line="611" column="62" lean-forward="true" selection-start-line="611" selection-start-column="62" selection-end-line="611" selection-end-column="62" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/arunwizz/crawlersystem/application/HTMLPageCrawler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
+        <state relative-caret-position="371">
           <caret line="68" column="25" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
         </state>
       </provider>
