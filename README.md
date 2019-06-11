@@ -1,1 +1,1 @@
-# crawler-system
+Implementation of MDR algorithm.
